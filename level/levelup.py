@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 from utilitys import embed_builder
 from database import database
@@ -35,34 +36,44 @@ class levelup(commands.Cog):
         #"xp"	INTEGER,
         #"warnings"	INTEGER,
 
-        # Get the directory where the script is located
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # Construct the full path to 'level.png' in the same directory as the script
-        image_path = os.path.join(script_dir,"levelup.png")
-
-        image = Image.open(image_path)
-
-        asset = message.author.avatar
-        data = BytesIO(await asset.read())
-        pfp = Image.open(data)
-        pfp = pfp.resize((289,289))
-        pfp = circle(pfp)
-        draw = ImageDraw.Draw(pfp)
-
-        text = 'https://devnote.in'
-        
-        draw.text((312,153))
-        image.paste(pfp, (25,25))
-        
-        image.save("profile.png")
-
-        await message.channel.send(file=discord.File("profile.png"))
         db.add_member(message.author.id, message.guild.id)
         user_data = db.get_user_data(message.author.id, message.guild.id)
-        db.update_level(message.author.id, message.guild.id, user_data[2] + 1)
-        await message.reply(f"Your level is now {user_data[2] + 1}")
-        
+        db.update_xp(message.author.id, message.guild.id, user_data[3] + 100)
+        if user_data[3] >= 1000:
+            db.update_xp(message.author.id, message.guild.id, 0)
+            db.update_level(message.author.id, message.guild.id, user_data[2] + 1)
+
+            # Get the directory where the script is located
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+
+            # Construct the full path to 'level.png' in the same directory as the script
+            image_path = os.path.join(script_dir,"levelup.png")
+
+            image = Image.open(image_path).convert("RGBA")
+
+            asset = message.author.avatar
+            data = BytesIO(await asset.read())
+            pfp = Image.open(data)
+            pfp = pfp.resize((98,98))
+            pfp = circle(pfp)
+            
+            # Create a new image with a white background
+            text_image = Image.new('RGBA', image.size, (255, 255, 255, 0))
+            draw = ImageDraw.Draw(text_image)
+
+            text = f'Level {user_data[2] + 1}'
+            
+            font = ImageFont.truetype("font.ttf", 45)
+
+            draw.text((10,10), text, (255,255,255), font=font)
+            
+            # Paste the text image onto the original image using the alpha channel of the original image as a mask
+            image.alpha_composite(text_image, (250,60))
+            image.alpha_composite(pfp, (2,2))
+            
+            image.save("profile.png")
+
+            await message.channel.send(f"Well done <@{message.author.id}> you leveled up",file=discord.File("profile.png"))
         
 async def setup(client: commands.Bot) -> None:
     await client.add_cog(levelup(client))

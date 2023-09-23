@@ -5,7 +5,7 @@ import os
 from importlib.machinery import SourceFileLoader
 from discord.interactions import Interaction
 
-class say(commands.Cog):
+class ban(commands.Cog):
     def __init__(self, client: commands.bot):
         self.client = client
     @app_commands.command(name="hey", description="Say something!")
@@ -14,4 +14,4 @@ class say(commands.Cog):
 
 
 async def setup(client: commands.Bot) -> None:
-    await client.add_cog(say(client))
+    await client.add_cog(ban(client))

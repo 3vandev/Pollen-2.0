@@ -21,4 +21,5 @@ def embed_builder(title, description, fields = None, color = discord.Color.yello
     if fields:
         for field in fields:
             embed.add_field(name=field.name, value=field.description)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/app-icons/1145021802083528735/56c74d987e6d5240adc7549e6a1fc86c.png?size=256&quot")
     return embed
