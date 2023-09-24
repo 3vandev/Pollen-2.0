@@ -12,7 +12,7 @@ class test_join_message(commands.Cog):
         self.client = client
 
     # Define a slash command called "test-join-message"
-    @app_commands.command(name="test-join-message", description="Test Join Message")
+    @app_commands.command(name="test-join-message", description="Test out your join message")
     async def test_join_message(self, interaction: discord.Interaction):
         # Get the channel where the join message will be sent
         channel = self.client.get_channel(db.get_join_message_channel(interaction.guild_id))

@@ -24,6 +24,7 @@ class client(commands.Bot):
         "level.levelup",
         "joinmessage.set_join_message",
         "joinmessage.test_join_message",
+        "joinmessage.send_join",
     ]
 
     # Define a setup hook to load all the cogs

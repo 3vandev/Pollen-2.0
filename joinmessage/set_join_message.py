@@ -12,6 +12,7 @@ class set_join_message(commands.Cog):
 
     # Defining a slash command
     @app_commands.command(name="set-join-message", description="Set Join Message | <message> <channel>")
+    @app_commands.describe(message='{user}, {guild}, {membercount}, {userping} will be replaced with the actual values', channel='The channel where the join message will be sent')
     async def set_join_message(self, interaction: discord.Interaction, message: str, channel: discord.TextChannel):
         try:
             join_message = db.get_join_message(interaction.guild_id)
