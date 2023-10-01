@@ -21,7 +21,8 @@ class client(commands.Bot):
     cogslist = [
         "moderation.ban",
         "ticket.setup_ticket",
-        "level.levelup",
+        "level.level_up",
+        "level.enable_level_up",
         "joinmessage.set_join_message",
         "joinmessage.test_join_message",
         "joinmessage.send_join",

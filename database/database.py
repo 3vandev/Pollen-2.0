@@ -81,6 +81,27 @@ class Database:
             f"SELECT * FROM guild WHERE guildid='{guild_id}'"
         )
         return self.c.fetchone()[2]
+    
+
+    # Level up
+    # guildid, channelid, message
+
+    def get_level_up(self, guild_id):
+        # Get the channel ID for the join message for the guild
+        self.c.execute(
+            f"SELECT * FROM levelup WHERE guildid='{guild_id}'"
+        )
+        return self.c.fetchone()
+    
+    def set_level_up(self, guild_id, channel_id, message):
+        self.c.execute(
+            f"DELETE FROM levelup WHERE guildid='{guild_id}'",
+        )
+        self.c.execute(
+            f"INSERT INTO levelup VALUES (?, ?, ?)",
+            (guild_id, channel_id, message),
+        )
+        self.conn.commit()
 
     # Define the structure of the user table in the database
     #"userid"	INTEGER,
