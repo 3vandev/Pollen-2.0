@@ -25,8 +25,11 @@ class create(ui.Modal, title="Open a ticket"):
 
         # send an embed message to the channel with the user's name and a message for them to be patient
         # also include the close_ticket view to allow the user to close the ticket
-        await channel.send(embed=embed_builder(f"{interaction.user.name}'s Ticket", f"**Reason:**\n{self.reason}\n\nModerators will be with you shortly please be patient"), view=close_ticket())
-        await interaction.response.send_message(embed=embed_builder("Success", "Ticket created!"), ephemeral=True)
+        embed = discord.Embed(description=f"**Reason:**\n{self.reason}\n\nModerators will be with you shortly please be patient",colour=discord.Colour.green())
+        embed.set_author(name=f"Ticket: {interaction.user.name}",icon_url=interaction.user.avatar.url)
+        await channel.send(embed=embed,view=close_ticket())
+
+        await interaction.response.send_message(embed=embed_builder("Success", f"Ticket created <#{channel.id}>\n\n**Reason**\n{self.reason}"), ephemeral=True)
 
 class create_ticket(discord.ui.View):
     def __init__(self):
