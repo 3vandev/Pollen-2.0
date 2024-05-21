@@ -7,6 +7,7 @@ from io import BytesIO
 import os
 
 db = database.db
+
 class enable_level_up(commands.Cog):
     def __init__(self, client: commands.bot):
         self.client = client
@@ -27,26 +28,33 @@ class enable_level_up(commands.Cog):
 
         if not message:
             message = "Default"
+        
         old = db.get_level_up(interaction.guild_id)
         db.set_level_up(interaction.guild_id, channel, message)
+        
         if channel == "None":
             channel = "Same Channel as the user is typing in"
         else:
             channel = f"<#{channel}>"
 
+        # Handle cases where `old` might be `None`
+        if old is not None:
+            before_text = f"Channel: {old[1]}\nMessage: {old[2]}"
+        else:
+            before_text = "No previous data available."
 
         # Create the embed
         overview = embed_builder(
             "Level Up Message",
             "Level Up Message has been set",
             fields=[
-                field("Before", f"Channel: {old[1]}\nMessage: {old[2]}"),
+                field("Before", before_text),
                 field("After", f"Channel: {channel}\nMessage: {db.get_level_up(interaction.guild_id)[2]}"),
             ],
         )
 
         # Send a message to the user that the panel has been created
-        await interaction.response.send_message("Ticket Panel Created!", ephemeral=True)
-        
+        await interaction.response.send_message(embed=overview, ephemeral=True)
+
 async def setup(client: commands.Bot) -> None:
     await client.add_cog(enable_level_up(client))

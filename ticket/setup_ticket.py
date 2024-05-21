@@ -32,7 +32,7 @@ class create(ui.Modal, title="Create a ticket panel"):
 
         # Create the embed
         embed = discord.Embed(
-            colour=discord.Colour.yellow(),
+            colour=discord.Colour.light_embed(),
             description=self.description,
             title=self.header
         )

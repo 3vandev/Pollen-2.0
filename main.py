@@ -19,13 +19,14 @@ class client(commands.Bot):
 
     # Define a list of cogs to load
     cogslist = [
-        "moderation.ban",
         "ticket.setup_ticket",
         "level.level_up",
         "level.enable_level_up",
         "joinmessage.set_join_message",
         "joinmessage.test_join_message",
         "joinmessage.send_join",
+        "moderation.rules",
+        "moderation.link"
     ]
 
     # Define a setup hook to load all the cogs
